@@ -1,0 +1,46 @@
+schema_version: 1
+
+context:
+  name: de-smard
+  version: "0.1.0"
+
+package:
+  name: ${{ name|lower }}
+  version: ${{ version }}
+
+source:
+  url: https://pypi.org/packages/source/${{ name[0] }}/${{ name }}/de-smard-${{ version }}.tar.gz
+  sha256: c76ef5b8cbfbf341e0bc1eaea46742e9ade623c4d89f442c14a79d0ceefcdfd8
+
+build:
+  number: 2
+  noarch: python
+  script: ${{ PYTHON }} -m pip install . -vv
+
+requirements:
+  host:
+    - pip
+    - python ${{ python_min }}.*
+    - poetry
+  run:
+    - python >=${{ python_min }}
+    - python-dateutil
+    - urllib3 >=1.25.3
+
+tests:
+  - python:
+      imports:
+        - deutschland.smard
+      pip_check: true
+      python_version: ${{ python_min }}
+
+about:
+  summary: Bundesnetzagentur Strommarktdaten
+  license: Apache-2.0
+  license_file:
+    - LICENSE
+  homepage: https://github.com/bundesAPI/smard-api
+
+extra:
+  recipe-maintainers:
+    - jan-janssen
